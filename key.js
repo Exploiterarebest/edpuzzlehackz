@@ -1,61 +1,62 @@
-const ALLOWED_KEYS = [
-    "key123",
-    "testkey",
-    "brianVIP",
-    "premiumUser1",
-    "schoolAccess2025"
+// === CONFIG ===
+const VALID_KEYS = [
+    "KEY123",
+    "VIP123",
+    "BRIAN2025"
 ];
 
-const CHEAT_URL = "https://cdn.jsdelivr.net/gh/YOURNAME/YOURREPO@latest/cheat.js";
+const CHEAT_URL = "https://cdn.jsdelivr.net/gh/Exploiterarebest/edpuzzlehackz@latest/cheat.js";
 
-if (window.guiLoaded) return;
-window.guiLoaded = true;
 
-// GUI panel
-const box = document.createElement("div");
-box.style = `
-    position: fixed;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background: rgba(20,20,20,0.92);
-    padding: 22px;
-    border-radius: 14px;
-    color: white;
-    text-align: center;
-    font-family: Arial;
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    z-index: 999999999999;
-`;
+// === GUI CREATION ===
+function showGUI() {
+    const box = document.createElement("div");
+    box.id = "keyBox";
+    box.style = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 12px;
+        color: white;
+        font-family: Arial;
+        z-index: 999999;
+        width: 300px;
+        text-align: center;
+        box-shadow: 0 0 20px #000;
+    `;
 
-box.innerHTML = `
-    <h2 style="margin-bottom:15px;">Enter Access Key</h2>
-    <input id="keyinput" type="password" placeholder="Key..."
-        style="width:90%;padding:10px;border-radius:8px;border:none;font-size:16px;">
-    <button id="submitkey"
-        style="width:100%;padding:10px;border:none;border-radius:8px;
-        background:#4b83ff;color:white;font-size:16px;cursor:pointer;margin-top:12px;">
-        Unlock
-    </button>
-`;
+    box.innerHTML = `
+        <h2 style="margin-bottom:10px;">Enter Key</h2>
+        <input id="keyInput" placeholder="Enter access key…" 
+               style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
+        <button id="submitKey" 
+                style="width:100%;padding:10px;border:none;border-radius:8px;background:#4e8cff;color:white;cursor:pointer;">
+            Unlock
+        </button>
+    `;
 
-document.body.appendChild(box);
+    document.body.appendChild(box);
 
-// Key handling
-document.getElementById("submitkey").onclick = () => {
-    const inputKey = document.getElementById("keyinput").value.trim();
+    document.getElementById("submitKey").onclick = checkKey;
+}
 
-    if (ALLOWED_KEYS.includes(inputKey)) {
-        box.innerHTML = "<h2>Loading...</h2>";
+async function checkKey() {
+    let key = document.getElementById("keyInput").value.trim();
 
-        // Load cheat script
-        const s = document.createElement("script");
-        s.src = CHEAT_URL + "?v=" + Math.random();
-        document.body.appendChild(s);
-
-        setTimeout(() => box.remove(), 700);
-    } else {
-        alert("❌ Incorrect Key");
+    if (!VALID_KEYS.includes(key)) {
+        alert("Invalid key!");
+        return;
     }
-};
+
+    document.getElementById("keyBox").remove();
+
+    // LOAD CHEAT
+    let code = await fetch(CHEAT_URL).then(r => r.text());
+    eval(code);
+}
+
+// Run GUI
+showGUI();
